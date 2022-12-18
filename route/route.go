@@ -10,12 +10,12 @@ import (
 var instance *Router
 
 type Router struct {
-	ct *ctl.Controller
+	ct ctl.Controller
 }
 
 //type NewRouterFunc func(ctl *ctl.Controller) (*Router, error)
 
-func GetRouter(ctl *ctl.Controller) (*Router, error) {
+func GetRouter(ctl ctl.Controller) (*Router, error) {
 	if ctl == nil {
 		return nil, errors.New("controller must is not nil")
 	}
@@ -34,7 +34,7 @@ func (p *Router) Handle() *gin.Engine {
 	r.Use(CORS())
 
 	v1 := r.Group("/v1")
-	rt.AddPersonRoute(v1, p.ct.PersonCtl)
+	rt.AddPersonRoute(v1, p.ct.PersonControl())
 
 	return r
 }

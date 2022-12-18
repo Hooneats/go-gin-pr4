@@ -2,6 +2,6 @@ package person
 
 import "github.com/gin-gonic/gin"
 
-type PersonCtler interface {
-	GetPersonByName(c *gin.Context)
+type PersonController interface {
+	GetByName(c *gin.Context)
 }

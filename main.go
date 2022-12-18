@@ -40,17 +40,11 @@ func main() {
 
 	//model 모듈 선언
 	if mod, err := model.GetModel(); err != nil {
-		if err != nil {
-			panic(err)
-		}
-	} else if controller, err := ctl.GetController(mod); err != nil { //controller 모듈 설정
-		if err != nil {
-			panic(err)
-		}
+		panic(err)
+	} else if controller, err := ctl.GetControl(mod); err != nil { //controller 모듈 설정
+		panic(err)
 	} else if rt, err := route.GetRouter(controller); err != nil { //router 모듈 설정
-		if err != nil {
-			panic(err)
-		}
+		panic(err)
 	} else {
 		port := os.Getenv("PORT")
 		mapi := &http.Server{

@@ -5,9 +5,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AddPersonRoute(rg *gin.RouterGroup, pct person.PersonCtler) {
+func AddPersonRoute(rg *gin.RouterGroup, pct person.PersonController) {
 	persons := rg.Group("/persons")
 	{
-		persons.GET("/:name", pct.GetPersonByName)
+		persons.GET("/:name", pct.GetByName)
 	}
 }

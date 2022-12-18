@@ -10,25 +10,25 @@ import (
 	"net/http"
 )
 
-var instance *PersonCtl
+var instance *PersonControl
 
-type PersonCtl struct {
+type PersonControl struct {
 	PersonModel person.PersonModeler
 }
 
 const colName = "tPerson"
 
-func GetPersonCtl(m model.Modeler) *PersonCtl {
+func GetPersonControl(m model.Modeler) *PersonControl {
 	if instance != nil {
 		return instance
 	}
-	instance = &PersonCtl{
+	instance = &PersonControl{
 		PersonModel: person.GetPersonModel(m.GetCollection("tPerson")),
 	}
 	return instance
 }
 
-func (pCtl *PersonCtl) GetPersonByName(c *gin.Context) {
+func (pCtl *PersonControl) GetByName(c *gin.Context) {
 	_, cancel := util.GetContext(util.ControllerTimeOut)
 	defer cancel()
 	name := c.Param("name")

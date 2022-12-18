@@ -10,23 +10,23 @@ import (
 	"strconv"
 )
 
-var instance *PersonControl
+var instance *personControl
 
-type PersonControl struct {
+type personControl struct {
 	PersonModel person.PersonModeler
 }
 
-func GetPersonControl(pm person.PersonModeler) *PersonControl {
+func GetPersonControl(pm person.PersonModeler) *personControl {
 	if instance != nil {
 		return instance
 	}
-	instance = &PersonControl{
+	instance = &personControl{
 		PersonModel: pm,
 	}
 	return instance
 }
 
-func (pCtl *PersonControl) GetByName(c *gin.Context) {
+func (pCtl *personControl) GetByName(c *gin.Context) {
 	_, cancel := util.GetContext(util.ControllerTimeOut)
 	defer cancel()
 	name := c.Param(Name)
@@ -41,7 +41,7 @@ func (pCtl *PersonControl) GetByName(c *gin.Context) {
 	}
 }
 
-func (pCtl *PersonControl) GetByPnum(c *gin.Context) {
+func (pCtl *personControl) GetByPnum(c *gin.Context) {
 	_, cancel := util.GetContext(util.ControllerTimeOut)
 	defer cancel()
 	pnum := c.Param(Pnum)
@@ -55,7 +55,7 @@ func (pCtl *PersonControl) GetByPnum(c *gin.Context) {
 		api.SuccessData(personData).Response(c)
 	}
 }
-func (pCtl *PersonControl) GetAll(c *gin.Context) {
+func (pCtl *personControl) GetAll(c *gin.Context) {
 	_, cancel := util.GetContext(util.ControllerTimeOut)
 	defer cancel()
 
@@ -71,7 +71,7 @@ func (pCtl *PersonControl) GetAll(c *gin.Context) {
 		api.SuccessData(personDatas).Response(c)
 	}
 }
-func (pCtl *PersonControl) PostOne(c *gin.Context) {
+func (pCtl *personControl) PostOne(c *gin.Context) {
 	_, cancel := util.GetContext(util.ControllerTimeOut)
 	defer cancel()
 	var webPerson *WebPerson
@@ -91,7 +91,7 @@ func (pCtl *PersonControl) PostOne(c *gin.Context) {
 		api.SuccessData(insertedWebP).Response(c)
 	}
 }
-func (pCtl *PersonControl) DeleteByPnum(c *gin.Context) {
+func (pCtl *personControl) DeleteByPnum(c *gin.Context) {
 	_, cancel := util.GetContext(util.ControllerTimeOut)
 	defer cancel()
 	pnum := c.Query(Pnum)
@@ -103,7 +103,7 @@ func (pCtl *PersonControl) DeleteByPnum(c *gin.Context) {
 		api.Success().Response(c)
 	}
 }
-func (pCtl *PersonControl) PutAgeByPnum(c *gin.Context) {
+func (pCtl *personControl) PutAgeByPnum(c *gin.Context) {
 	_, cancel := util.GetContext(util.ControllerTimeOut)
 	defer cancel()
 

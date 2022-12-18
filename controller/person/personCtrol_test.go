@@ -83,7 +83,7 @@ func (m *MockPersonModel) DeleteByPnum(pnum string) error {
 func (m *MockPersonModel) UpdateAgeByPnum(age int, pnum string) error {
 	return nil
 }
-func setRouterAndPCon() (*gin.Engine, *PersonControl) {
+func setRouterAndPCon() (*gin.Engine, *personControl) {
 	r := gin.Default()
 	mkmodel := &MockModel{}
 	mkPersonmodel := GetPersonModel(mkmodel)

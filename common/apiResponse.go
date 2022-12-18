@@ -1,6 +1,7 @@
 package common
 
 import (
+	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
@@ -11,6 +12,9 @@ type ApiResponse[T any] struct {
 	Err     error  `json:"err"`
 }
 
+func (a ApiResponse[T]) Response(c *gin.Context) {
+	c.JSON(a.Code, a)
+}
 func Success() ApiResponse[any] {
 	return SuccessAndCustomMessage("success", "ok")
 }

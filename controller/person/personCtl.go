@@ -24,7 +24,7 @@ func GetPersonControl(m model.Modeler) *PersonControl {
 		return instance
 	}
 	instance = &PersonControl{
-		PersonModel: person.GetPersonModel(m.GetCollection("tPerson")),
+		PersonModel: person.GetPersonModel(m.GetCollection(colName)),
 	}
 	return instance
 }
@@ -32,124 +32,95 @@ func GetPersonControl(m model.Modeler) *PersonControl {
 func (pCtl *PersonControl) GetByName(c *gin.Context) {
 	_, cancel := util.GetContext(util.ControllerTimeOut)
 	defer cancel()
-	name := c.Param("name")
+	name := c.Param(Name)
 
-	var response api.ApiResponse[any]
 	findPerson, err := pCtl.PersonModel.FindByName(name)
 	if err != nil {
 		log.Fatal(err)
-		response = api.Fail(api.NewError(err, http.StatusNotFound))
+		api.Fail(api.NewError(err, http.StatusNotFound)).Response(c)
 	} else {
 		personData := NewWebPerson(*findPerson)
-		response = api.SuccessData(personData)
+		api.SuccessData(personData).Response(c)
 	}
-	log.Println(response)
-	c.JSON(http.StatusOK, response)
 }
 
 func (pCtl *PersonControl) GetByPnum(c *gin.Context) {
 	_, cancel := util.GetContext(util.ControllerTimeOut)
 	defer cancel()
-	pnum := c.Param("pnum")
+	pnum := c.Param(Pnum)
 
-	var response api.ApiResponse[any]
 	findPerson, err := pCtl.PersonModel.FindByPnum(pnum)
 	if err != nil {
 		log.Fatal(err)
-		response = api.Fail(api.NewError(err, http.StatusNotFound))
+		api.Fail(api.NewError(err, http.StatusNotFound)).Response(c)
 	} else {
 		personData := NewWebPerson(*findPerson)
-		response = api.SuccessData(personData)
+		api.SuccessData(personData).Response(c)
 	}
-
-	log.Println(response)
-	//jsonRes, _ := json.Marshal(resData)
-	c.JSON(http.StatusOK, response)
 }
 func (pCtl *PersonControl) GetAll(c *gin.Context) {
 	_, cancel := util.GetContext(util.ControllerTimeOut)
 	defer cancel()
 
-	var resData api.ApiResponse[any]
 	findPersons, err := pCtl.PersonModel.FindAll()
 	if err != nil {
 		log.Fatal(err)
-		resData = api.Fail(api.NewError(err, http.StatusNotFound))
+		api.Fail(api.NewError(err, http.StatusNotFound)).Response(c)
 	} else {
 		personDatas := make([]*WebPerson, len(findPersons))
 		for index, findPerson := range findPersons {
 			personDatas[index] = NewWebPerson(*findPerson)
 		}
-		resData = api.SuccessData(personDatas)
+		api.SuccessData(personDatas).Response(c)
 	}
-	log.Println(resData)
-	//jsonRes, _ := json.Marshal(resData)
-	c.JSON(http.StatusOK, resData)
-
 }
 func (pCtl *PersonControl) PostOne(c *gin.Context) {
 	_, cancel := util.GetContext(util.ControllerTimeOut)
 	defer cancel()
-	var resData api.ApiResponse[any]
 	var webPerson *WebPerson
 	err := c.BindJSON(webPerson)
 	if err != nil {
 		log.Fatal(err)
-		resData = api.Fail(api.NewError(err, http.StatusBadRequest))
-		c.JSON(http.StatusBadRequest, resData)
+		api.Fail(api.NewError(err, http.StatusBadRequest)).Response(c)
 		return
 	}
 
 	person := webPerson.NewPerson()
 	intertedP, err := pCtl.PersonModel.InsertOne(person)
 	if err != nil {
-		resData = api.Fail(api.NewError(err, http.StatusBadRequest))
-		c.JSON(http.StatusBadRequest, resData)
-		return
+		api.Fail(api.NewError(err, http.StatusBadRequest)).Response(c)
 	} else {
-		resData = api.SuccessData(intertedP)
-		log.Println(resData)
-		//jsonRes, _ := json.Marshal(resData)
-		c.JSON(http.StatusOK, resData)
+		api.SuccessData(intertedP).Response(c)
 	}
 }
 func (pCtl *PersonControl) DeleteByPnum(c *gin.Context) {
 	_, cancel := util.GetContext(util.ControllerTimeOut)
 	defer cancel()
-	var resData api.ApiResponse[any]
-	pnum := c.Param("pnum")
+	pnum := c.Param(Pnum)
 
 	err := pCtl.PersonModel.DeleteByPnum(pnum)
 	if err != nil {
-		resData = api.Fail(api.NewError(err, http.StatusBadRequest))
-		c.JSON(http.StatusBadRequest, resData)
-		return
+		api.Fail(api.NewError(err, http.StatusBadRequest)).Response(c)
 	} else {
-		resData = api.Success()
-		c.JSON(http.StatusOK, resData)
+		api.Success().Response(c)
 	}
 }
 func (pCtl *PersonControl) PutAgeByPnum(c *gin.Context) {
 	_, cancel := util.GetContext(util.ControllerTimeOut)
 	defer cancel()
 
-	var resData api.ApiResponse[any]
-	pnum := c.Param("pnum")
-	ageStr := c.Param("age")
+	pnum := c.Param(Name)
+	ageStr := c.Param(Age)
 	age, err := strconv.Atoi(ageStr)
 	if err != nil {
-		resData = api.Fail(api.NewError(err, http.StatusBadRequest))
-		c.JSON(http.StatusBadRequest, resData)
+		api.Fail(api.NewError(err, http.StatusBadRequest)).Response(c)
 		return
 	}
 
 	err = pCtl.PersonModel.UpdateAgeByPnum(age, pnum)
 	if err != nil {
-		resData = api.Fail(api.NewError(err, http.StatusBadRequest))
-		c.JSON(http.StatusBadRequest, resData)
-		return
+		api.Fail(api.NewError(err, http.StatusBadRequest)).Response(c)
 	} else {
-		resData = api.Success()
-		c.JSON(http.StatusOK, resData)
+		api.Success().Response(c)
 	}
 }

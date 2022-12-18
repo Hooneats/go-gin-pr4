@@ -8,6 +8,12 @@ type WebPerson struct {
 	Pnum string `json:"pnum"`
 }
 
+const (
+	Name = "name"
+	Age  = "age"
+	Pnum = "pnum"
+)
+
 func NewWebPerson(p person.Person) *WebPerson {
 	return &WebPerson{
 		Name: p.Name,

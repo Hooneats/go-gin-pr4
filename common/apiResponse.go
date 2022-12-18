@@ -11,7 +11,11 @@ type ApiResponse[T any] struct {
 	Err     error  `json:"err"`
 }
 
-func Success[T any](d T) ApiResponse[any] {
+func Success() ApiResponse[any] {
+	return SuccessAndCustomMessage("success", "ok")
+}
+
+func SuccessData[T any](d T) ApiResponse[any] {
 	return SuccessAndCustomMessage(d, "ok")
 }
 

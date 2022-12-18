@@ -15,3 +15,11 @@ func NewWebPerson(p person.Person) *WebPerson {
 		Pnum: p.Pnum,
 	}
 }
+
+func (p *WebPerson) NewPerson() *person.Person {
+	return &person.Person{
+		Name: p.Name,
+		Age:  p.Age,
+		Pnum: p.Pnum,
+	}
+}

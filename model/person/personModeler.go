@@ -1,10 +1,10 @@
 package person
 
 type PersonModeler interface {
-	FindPersonByName(name string) (*Person, error)
-	FindPersonByPnum(pnum string) (*Person, error)
-	FindAllPerson() ([]*Person, error)
-	InsertPerson(person *Person) (*Person, error)
-	DeletePersonByPnum(pnum string) error
-	UpdatePersonAgeByPnum(age int, pnum string) error
+	FindByName(name string) (*Person, error)
+	FindByPnum(pnum string) (*Person, error)
+	FindAll() ([]*Person, error)
+	InsertOne(person *Person) (*Person, error)
+	DeleteByPnum(pnum string) error
+	UpdateAgeByPnum(age int, pnum string) error
 }

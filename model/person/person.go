@@ -9,14 +9,6 @@ type Person struct {
 	Pnum string             `bson:"pnum,omitempty"`
 }
 
-func NewPerson(name, pnum string, age int) *Person {
-	return &Person{
-		Name: name,
-		Age:  age,
-		Pnum: pnum,
-	}
-}
-
 func (p *Person) EditPerson(name, pnum string, age int) {
 	p.Name = name
 	p.Age = age

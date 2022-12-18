@@ -40,7 +40,7 @@ func createIndex(col *mongo.Collection) {
 	}
 }
 
-func (p *personModel) FindPersonByName(name string) (*Person, error) {
+func (p *personModel) FindByName(name string) (*Person, error) {
 	ctx, cancel := util.GetContext(util.ModelTimeOut)
 	defer cancel()
 
@@ -53,7 +53,7 @@ func (p *personModel) FindPersonByName(name string) (*Person, error) {
 	return person, nil
 }
 
-func (p *personModel) FindPersonByPnum(pnum string) (*Person, error) {
+func (p *personModel) FindByPnum(pnum string) (*Person, error) {
 	ctx, cancel := util.GetContext(util.ModelTimeOut)
 	defer cancel()
 
@@ -75,7 +75,7 @@ func (p *personModel) findOne(ctx context.Context, filterM bson.M) (*Person, err
 
 	return person, nil
 }
-func (p *personModel) FindAllPerson() ([]*Person, error) {
+func (p *personModel) FindAll() ([]*Person, error) {
 	ctx, cancel := util.GetContext(util.ModelTimeOut)
 	defer cancel()
 
@@ -101,7 +101,7 @@ func (p *personModel) FindAllPerson() ([]*Person, error) {
 	}
 	return findPersons, err
 }
-func (p *personModel) InsertPerson(person *Person) (*Person, error) {
+func (p *personModel) InsertOne(person *Person) (*Person, error) {
 	ctx, cancel := util.GetContext(util.ModelTimeOut)
 	defer cancel()
 
@@ -114,7 +114,7 @@ func (p *personModel) InsertPerson(person *Person) (*Person, error) {
 	log.Printf("Inserted person +count %d, id is %s\n", 1, result.InsertedID)
 	return person, nil
 }
-func (p *personModel) DeletePersonByPnum(pnum string) error {
+func (p *personModel) DeleteByPnum(pnum string) error {
 	ctx, cancel := util.GetContext(util.ModelTimeOut)
 	defer cancel()
 
@@ -127,7 +127,7 @@ func (p *personModel) DeletePersonByPnum(pnum string) error {
 	log.Printf("Deleted person -count %d by pnum %s\n", result.DeletedCount, pnum)
 	return nil
 }
-func (p *personModel) UpdatePersonAgeByPnum(age int, pnum string) error {
+func (p *personModel) UpdateAgeByPnum(age int, pnum string) error {
 	ctx, cancel := util.GetContext(util.ModelTimeOut)
 	defer cancel()
 

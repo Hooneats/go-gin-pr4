@@ -10,7 +10,6 @@ import (
 var instance *control
 
 type control struct {
-	model     model.Modeler
 	personCtl ctl.PersonController
 }
 
@@ -24,7 +23,6 @@ func GetControl(mod model.Modeler) (*control, error) {
 	personModel := person.GetPersonModel(mod)
 	personModel.CreateIndex(mod, ctl.Name, ctl.Pnum)
 	instance = &control{
-		model:     mod,
 		personCtl: ctl.GetPersonControl(personModel),
 	}
 	return instance, nil

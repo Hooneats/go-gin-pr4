@@ -36,7 +36,7 @@ func (pCtl *PersonControl) GetByName(c *gin.Context) {
 
 	findPerson, err := pCtl.PersonModel.FindByName(name)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 		api.Fail(api.NewError(err, http.StatusNotFound)).Response(c)
 	} else {
 		personData := NewWebPerson(*findPerson)
@@ -51,7 +51,7 @@ func (pCtl *PersonControl) GetByPnum(c *gin.Context) {
 
 	findPerson, err := pCtl.PersonModel.FindByPnum(pnum)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 		api.Fail(api.NewError(err, http.StatusNotFound)).Response(c)
 	} else {
 		personData := NewWebPerson(*findPerson)
@@ -64,7 +64,7 @@ func (pCtl *PersonControl) GetAll(c *gin.Context) {
 
 	findPersons, err := pCtl.PersonModel.FindAll()
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 		api.Fail(api.NewError(err, http.StatusNotFound)).Response(c)
 	} else {
 		personDatas := make([]*WebPerson, len(findPersons))
@@ -78,9 +78,9 @@ func (pCtl *PersonControl) PostOne(c *gin.Context) {
 	_, cancel := util.GetContext(util.ControllerTimeOut)
 	defer cancel()
 	var webPerson *WebPerson
-	err := c.BindJSON(webPerson)
+	err := c.BindJSON(&webPerson)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 		api.Fail(api.NewError(err, http.StatusBadRequest)).Response(c)
 		return
 	}
@@ -96,7 +96,7 @@ func (pCtl *PersonControl) PostOne(c *gin.Context) {
 func (pCtl *PersonControl) DeleteByPnum(c *gin.Context) {
 	_, cancel := util.GetContext(util.ControllerTimeOut)
 	defer cancel()
-	pnum := c.Param(Pnum)
+	pnum := c.Query(Pnum)
 
 	err := pCtl.PersonModel.DeleteByPnum(pnum)
 	if err != nil {
@@ -109,8 +109,8 @@ func (pCtl *PersonControl) PutAgeByPnum(c *gin.Context) {
 	_, cancel := util.GetContext(util.ControllerTimeOut)
 	defer cancel()
 
-	pnum := c.Param(Name)
-	ageStr := c.Param(Age)
+	pnum := c.Query(Pnum)
+	ageStr := c.Query(Age)
 	age, err := strconv.Atoi(ageStr)
 	if err != nil {
 		api.Fail(api.NewError(err, http.StatusBadRequest)).Response(c)

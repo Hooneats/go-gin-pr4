@@ -4,8 +4,8 @@ import "go.mongodb.org/mongo-driver/bson/primitive"
 
 type Person struct {
 	id   primitive.ObjectID `bson:"_id"`
-	Name string             `validate:"required" bson:"name"`
-	Age  int                `validate:"required" bson:"age"`
+	Name string             `bson:"name"`
+	Age  int                `bson:"age"`
 	Pnum string             `bson:"pnum,omitempty"`
 }
 

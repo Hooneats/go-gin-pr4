@@ -13,7 +13,7 @@ type ApiResponse[T any] struct {
 }
 
 func (a *ApiResponse[T]) Response(c *gin.Context) {
-	c.Header("Content-Type", "application/json")
+	//c.Header("Content-Type", "application/json")
 	c.JSON(a.Code, a)
 }
 func Success() *ApiResponse[any] {

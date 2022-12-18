@@ -2,7 +2,6 @@ package person
 
 import (
 	api "github.com/Hooneats/go-gin-pr4/common"
-	"github.com/Hooneats/go-gin-pr4/model"
 	"github.com/Hooneats/go-gin-pr4/model/person"
 	"github.com/Hooneats/go-gin-pr4/util"
 	"github.com/gin-gonic/gin"
@@ -17,14 +16,12 @@ type PersonControl struct {
 	PersonModel person.PersonModeler
 }
 
-const colName = "tPerson"
-
-func GetPersonControl(m model.Modeler) *PersonControl {
+func GetPersonControl(pm person.PersonModeler) *PersonControl {
 	if instance != nil {
 		return instance
 	}
 	instance = &PersonControl{
-		PersonModel: person.GetPersonModel(m.GetCollection(colName)),
+		PersonModel: pm,
 	}
 	return instance
 }
@@ -86,11 +83,12 @@ func (pCtl *PersonControl) PostOne(c *gin.Context) {
 	}
 
 	person := webPerson.NewPerson()
-	intertedP, err := pCtl.PersonModel.InsertOne(person)
+	insertedP, err := pCtl.PersonModel.InsertOne(person)
 	if err != nil {
 		api.Fail(api.NewError(err, http.StatusBadRequest)).Response(c)
 	} else {
-		api.SuccessData(intertedP).Response(c)
+		insertedWebP := NewWebPerson(*insertedP)
+		api.SuccessData(insertedWebP).Response(c)
 	}
 }
 func (pCtl *PersonControl) DeleteByPnum(c *gin.Context) {

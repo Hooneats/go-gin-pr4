@@ -4,6 +4,7 @@ import (
 	"errors"
 	ctl "github.com/Hooneats/go-gin-pr4/controller/person"
 	"github.com/Hooneats/go-gin-pr4/model"
+	"github.com/Hooneats/go-gin-pr4/model/person"
 )
 
 var instance *control
@@ -22,7 +23,7 @@ func GetControl(mod model.Modeler) (*control, error) {
 	}
 	instance = &control{
 		model:     mod,
-		personCtl: ctl.GetPersonControl(mod),
+		personCtl: ctl.GetPersonControl(person.GetPersonModel(mod)),
 	}
 	return instance, nil
 }

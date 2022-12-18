@@ -14,7 +14,7 @@ func AddPersonRoute(rg *gin.RouterGroup, pct person.PersonController) {
 	})
 	persons := rg.Group("/persons")
 	{
-		persons.GET("/", pct.GetAll)
+		persons.GET("", pct.GetAll)
 		persons.GET("/name/:name", pct.GetByName)
 		persons.GET("/pnum/:pnum", pct.GetByPnum)
 

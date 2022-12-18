@@ -3,6 +3,7 @@ package person
 import (
 	"context"
 	"errors"
+	"github.com/Hooneats/go-gin-pr4/model"
 	"github.com/Hooneats/go-gin-pr4/util"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -17,10 +18,13 @@ type personModel struct {
 	collection *mongo.Collection
 }
 
-func GetPersonModel(col *mongo.Collection) *personModel {
+const colName = "tPerson"
+
+func GetPersonModel(mod model.Modeler) *personModel {
 	if instance != nil {
 		return instance
 	}
+	col := mod.GetCollection(colName)
 	createIndex(col)
 	instance = &personModel{
 		collection: col,

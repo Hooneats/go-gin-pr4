@@ -53,6 +53,9 @@ type MockModel struct {
 func (m *MockModel) GetCollection(collection string) *mongo.Collection {
 	return nil
 }
+func (m *MockModel) CreateIndex(colName string, indexName ...string) {
+	return
+}
 
 type MockPersonModel struct {
 }

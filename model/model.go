@@ -2,8 +2,10 @@ package model
 
 import (
 	"github.com/Hooneats/go-gin-pr4/util"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"log"
 	"os"
 )
 
@@ -52,4 +54,22 @@ func (m *model) GetCollection(collection string) *mongo.Collection {
 	col := db.Collection(collection)
 	m.collection[collection] = col
 	return col
+}
+
+func (m *model) CreateIndex(colName string, indexName ...string) {
+	ctx, cancel := util.GetContext(util.ModelTimeOut)
+	defer cancel()
+	col := m.GetCollection(colName)
+	var indexModels []mongo.IndexModel
+	for _, name := range indexName {
+		idxModel := mongo.IndexModel{
+			Keys: bson.M{name: 1}, Options: options.Index().SetUnique(true),
+		}
+		indexModels = append(indexModels, idxModel)
+	}
+	_, err := col.Indexes().CreateMany(ctx, indexModels)
+	if err != nil {
+		log.Println(err)
+		return
+	}
 }

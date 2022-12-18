@@ -8,7 +8,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 )
 
@@ -18,31 +17,21 @@ type personModel struct {
 	collection *mongo.Collection
 }
 
-const colName = "tPerson"
+const TPerson = "tPerson"
 
 func GetPersonModel(mod model.Modeler) *personModel {
 	if instance != nil {
 		return instance
 	}
-	col := mod.GetCollection(colName)
-	createIndex(col)
+	col := mod.GetCollection(TPerson)
 	instance = &personModel{
 		collection: col,
 	}
 	return instance
 }
 
-func createIndex(col *mongo.Collection) {
-	ctx, cancel := util.GetContext(util.ModelTimeOut)
-	defer cancel()
-	_, err := col.Indexes().CreateMany(ctx, []mongo.IndexModel{
-		{Keys: bson.M{"name": 1}, Options: options.Index().SetUnique(true)},
-		{Keys: bson.M{"pnum": 1}, Options: options.Index().SetUnique(true)},
-	})
-	if err != nil {
-		log.Println(err)
-		return
-	}
+func (p *personModel) CreateIndex(mod model.Modeler, indexName ...string) {
+	mod.CreateIndex(TPerson, indexName...)
 }
 
 func (p *personModel) FindByName(name string) (*Person, error) {

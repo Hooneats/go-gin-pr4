@@ -21,9 +21,11 @@ func GetControl(mod model.Modeler) (*control, error) {
 	if mod == nil {
 		return nil, errors.New("modeler must is not nil")
 	}
+	personModel := person.GetPersonModel(mod)
+	personModel.CreateIndex(mod, ctl.Name, ctl.Pnum)
 	instance = &control{
 		model:     mod,
-		personCtl: ctl.GetPersonControl(person.GetPersonModel(mod)),
+		personCtl: ctl.GetPersonControl(personModel),
 	}
 	return instance, nil
 }

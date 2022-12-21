@@ -16,7 +16,7 @@ import (
 	"testing"
 )
 
-func GetMockPerson() *person.Person {
+func GetStubPerson() *person.Person {
 	return &person.Person{
 		Name: "test",
 		Age:  10,
@@ -24,14 +24,14 @@ func GetMockPerson() *person.Person {
 	}
 }
 
-func GetMockPersons() []*person.Person {
+func GetStubPersons() []*person.Person {
 	return []*person.Person{
-		GetMockPerson(),
-		GetMockPerson(),
+		GetStubPerson(),
+		GetStubPerson(),
 	}
 }
 
-func GetMockWebPerson() *WebPerson {
+func GetStubWebPerson() *WebPerson {
 	return &WebPerson{
 		Name: "test",
 		Age:  10,
@@ -39,10 +39,10 @@ func GetMockWebPerson() *WebPerson {
 	}
 }
 
-func GetMockWebPersons() []*WebPerson {
+func GetStubWebPersons() []*WebPerson {
 	return []*WebPerson{
-		GetMockWebPerson(),
-		GetMockWebPerson(),
+		GetStubWebPerson(),
+		GetStubWebPerson(),
 	}
 }
 
@@ -65,17 +65,17 @@ func GetPersonModel(mod model.Modeler) *MockPersonModel {
 }
 
 func (m *MockPersonModel) FindByName(name string) (*person.Person, error) {
-	return GetMockPerson(), nil
+	return GetStubPerson(), nil
 }
 
 func (m *MockPersonModel) FindByPnum(pnum string) (*person.Person, error) {
-	return GetMockPerson(), nil
+	return GetStubPerson(), nil
 }
 func (m *MockPersonModel) FindAll() ([]*person.Person, error) {
-	return GetMockPersons(), nil
+	return GetStubPersons(), nil
 }
 func (m *MockPersonModel) InsertOne(person *person.Person) (*person.Person, error) {
-	return GetMockPerson(), nil
+	return GetStubPerson(), nil
 }
 func (m *MockPersonModel) DeleteByPnum(pnum string) error {
 	return nil
@@ -97,7 +97,7 @@ func TestPersonControl_UNIT(t *testing.T) {
 	t.Run("name 으로 Person 데이터 가져오기", func(t *testing.T) {
 		//c, _ := gin.CreateTestContext(httptest.NewRecorder())
 		r.GET("/v1/persons/name", pControl.GetByName)
-		mockWebPerson := GetMockWebPerson()
+		mockWebPerson := GetStubWebPerson()
 		mockResponse := api.SuccessData(mockWebPerson)
 		expectedData, _ := json.Marshal(mockResponse) // Json 으로
 
@@ -113,7 +113,7 @@ func TestPersonControl_UNIT(t *testing.T) {
 
 	t.Run("pnum 으로 Person 데이터 가져오기", func(t *testing.T) {
 		r.GET("/v1/persons/pnum", pControl.GetByPnum)
-		mockWebPerson := GetMockWebPerson()
+		mockWebPerson := GetStubWebPerson()
 		mockResponse := api.SuccessData(mockWebPerson)
 		expectedData, _ := json.Marshal(mockResponse)
 
@@ -129,7 +129,7 @@ func TestPersonControl_UNIT(t *testing.T) {
 
 	t.Run("Person 데이터 전부 가져오기", func(t *testing.T) {
 		r.GET("/v1/persons", pControl.GetAll)
-		mockWebPerson := GetMockWebPersons()
+		mockWebPerson := GetStubWebPersons()
 		mockResponse := api.SuccessData(mockWebPerson)
 		expectedData, _ := json.Marshal(mockResponse)
 
@@ -145,7 +145,7 @@ func TestPersonControl_UNIT(t *testing.T) {
 
 	t.Run("Person 데이터 Post One 요청", func(t *testing.T) {
 		r.POST("/v1/persons/person", pControl.PostOne)
-		mockWebPerson := GetMockWebPerson()
+		mockWebPerson := GetStubWebPerson()
 		mockResponse := api.SuccessData(mockWebPerson)
 		expectedData, _ := json.Marshal(mockResponse)
 
@@ -162,7 +162,7 @@ func TestPersonControl_UNIT(t *testing.T) {
 
 	t.Run("Person pnum 으로 삭제 요청: 본 테스트는 Database 의존성이 없는 Mock 활용 Controller 단위 테스트로 항상 통과", func(t *testing.T) {
 		r.DELETE("/v1/persons/person", pControl.DeleteByPnum)
-		mockWebPerson := GetMockWebPerson()
+		mockWebPerson := GetStubWebPerson()
 		mockResponse := api.Success()
 		expectedData, _ := json.Marshal(mockResponse)
 		req, _ := http.NewRequest("DELETE", "/v1/persons/person?pnum="+mockWebPerson.Pnum, nil)
@@ -177,7 +177,7 @@ func TestPersonControl_UNIT(t *testing.T) {
 
 	t.Run("pnum 으로 person 데이타 age 수정", func(t *testing.T) {
 		r.PUT("/v1/persons/person", pControl.PutAgeByPnum)
-		mockWebPerson := GetMockWebPerson()
+		mockWebPerson := GetStubWebPerson()
 		mockResponse := api.Success()
 		expectedData, _ := json.Marshal(mockResponse)
 		req, _ := http.NewRequest("PUT", "/v1/persons/person?age=20&pnum="+mockWebPerson.Pnum, nil)
